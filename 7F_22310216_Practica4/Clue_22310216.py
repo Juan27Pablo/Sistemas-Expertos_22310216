@@ -146,7 +146,11 @@ class ClueGame:
 
     def pista_persona(self):
         if not self.usar_pista(): return
-        nombre = simpledialog.askstring("Pista: Persona", "Escribe el nombre del personaje que deseas investigar:", parent=self.root)
+        while True:
+            nombre = simpledialog.askstring("Pista: Persona", "Escribe el nombre del personaje que deseas investigar:", parent=self.root)
+            if nombre:
+                break
+            messagebox.showwarning("Aviso", "Debes escribir un nombre de personaje.")
         if nombre in self.historia_personas:
             self.actualizar_info(f"Pista Persona ({nombre}): {self.historia_personas[nombre]}")
         else:
@@ -154,7 +158,11 @@ class ClueGame:
 
     def pista_arma(self):
         if not self.usar_pista(): return
-        nombre = simpledialog.askstring("Pista: Arma", "Escribe el nombre del arma que deseas revisar:", parent=self.root)
+        while True:
+            nombre = simpledialog.askstring("Pista: Arma", "Escribe el nombre del arma que deseas revisar:", parent=self.root)
+            if nombre:
+                break
+            messagebox.showwarning("Aviso", "Debes escribir un arma.")
         if nombre in self.historia_armas:
             self.actualizar_info(f"Pista Arma ({nombre}): {self.historia_armas[nombre]}")
         else:
@@ -162,16 +170,32 @@ class ClueGame:
 
     def pista_lugar(self):
         if not self.usar_pista(): return
-        lugar = simpledialog.askstring("Pista: Lugar", "Escribe el lugar que deseas investigar:", parent=self.root)
+        while True:
+            lugar = simpledialog.askstring("Pista: Lugar", "Escribe el lugar que deseas investigar:", parent=self.root)
+            if lugar:
+                break
+            messagebox.showwarning("Aviso", "Debes escribir un lugar.")
         if lugar == self.lugar:
             self.actualizar_info(f"Pista Lugar ({lugar}): Se encontro algo sospechoso en este lugar.")
         else:
             self.actualizar_info(f"Pista Lugar ({lugar}): Este lugar parece estar en orden.")
 
     def hacer_acusacion(self):
-        culpable = simpledialog.askstring("Acusacion", "¿Quien es el culpable?", parent=self.root)
-        arma = simpledialog.askstring("Acusacion", "¿Que arma se uso?", parent=self.root)
-        lugar = simpledialog.askstring("Acusacion", "¿Donde ocurrio el crimen?", parent=self.root)
+        while True:
+            culpable = simpledialog.askstring("Acusacion", "¿Quien es el culpable?", parent=self.root)
+            if culpable:
+                break
+            messagebox.showwarning("Aviso", "Debes escribir el nombre del culpable.")
+        while True:
+            arma = simpledialog.askstring("Acusacion", "¿Que arma se uso?", parent=self.root)
+            if arma:
+                break
+            messagebox.showwarning("Aviso", "Debes escribir el arma utilizada.")
+        while True:
+            lugar = simpledialog.askstring("Acusacion", "¿Donde ocurrio el crimen?", parent=self.root)
+            if lugar:
+                break
+            messagebox.showwarning("Aviso", "Debes escribir el lugar del crimen.")
 
         if (culpable == self.culpable) and (arma == self.arma) and (lugar == self.lugar):
             messagebox.showinfo("Resultado", f"¡Correcto! Has resuelto el caso.\n\n{self.historia_final['texto']}")
@@ -182,14 +206,15 @@ class ClueGame:
 
     def frame_fin(self):
         self.clear_window()
-        tk.Label(self.root, text="Fin del juego", font=("Arial", 24, "bold"), bg=self.bg_color, fg="white").pack(pady=30)
+        self.root.config(bg=self.bg_color)
+        tk.Label(self.root, text="Fin del juego", font=("Arial", 22, "bold"), bg=self.bg_color, fg="white").pack(pady=20)
         tk.Button(self.root, text="Jugar de nuevo", font=("Arial", 16), width=20, bg=self.boton_bg, fg=self.boton_fg,
                   command=self.menu_caso).pack(pady=15)
         tk.Button(self.root, text="Salir", font=("Arial", 16), width=20, bg=self.boton_bg, fg=self.boton_fg,
-                  command=self.root.quit).pack(pady=15)
+                  command=self.root.quit).pack(pady=10)
 
-# --- Ejecutar la aplicacion ---
+
 if __name__ == "__main__":
     root = tk.Tk()
-    app = ClueGame(root)
+    game = ClueGame(root)
     root.mainloop()
